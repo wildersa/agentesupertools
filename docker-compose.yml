@@ -1,0 +1,100 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: agentesupertools
+      POSTGRES_USER: supertools_user
+      POSTGRES_PASSWORD: supertools_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U supertools_user -d agentesupertools"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  observability-adapter:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.adapter
+    ports:
+      - "9010:9010"
+    environment:
+      - PYTHONPATH=/app/src
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9010/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - redis
+
+  itsm-adapter:
+    build:
+      context: .
+      dockerfile: docker/itsm-adapter/Dockerfile
+    ports:
+      - "9020:9020"
+    environment:
+      - PYTHONPATH=/app/src
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9020/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - redis
+
+  mcp-broker:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.broker
+    ports:
+      - "9000:9000"
+    environment:
+      - PYTHONPATH=/app/src
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - observability-adapter
+      - redis
+
+  channel-gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    ports:
+      - "9200:9200"
+    environment:
+      - PYTHONPATH=/app/src
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - mcp-broker
+      - redis
+
+volumes:
+  postgres_data:
+  redis_data:

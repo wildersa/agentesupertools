@@ -10,8 +10,24 @@
 
 ### MVP 1: Chat Básico com Gateway de Observability
 
-**Prazo**: 3-4 semanas  
-**Objetivo**: Demonstrar chat respondendo e interagindo com ferramentas de gateway básicas
+**Prazo**: 4-6 semanas  
+**Objetivo**: Demonst### Fatores que Influenciam os Prazos
+
+**✅ Tempos Realistas Para:**
+
+- Desenvolvedor sênior Python/FastAPI experiente
+- Conhecimento prévio em MCP e arquiteturas distribuídas
+- Ambiente de desenvolvimento já configurado
+- Decisões arquiteturais já tomadas
+
+**⚠️ Podem Aumentar 30-50% se:**
+
+- Equipe junior ou aprendendo as tecnologias
+- Primeira vez implementando MCP
+- Muitas mudanças de requisitos
+- Integrações complexas com sistemas legados reais
+
+**🔴 Principais Riscos de Atraso:**dendo e interagindo com ferramentas de gateway básicas
 
 **Funcionalidades**:
 
@@ -28,7 +44,7 @@
 
 ### MVP 2: Gestão de Incidentes via ITSM
 
-**Prazo**: 4-5 semanas após MVP1  
+**Prazo**: 5-7 semanas após MVP1  
 **Objetivo**: Agente interagindo com incidentes via gateway de ITSM
 
 **Funcionalidades**:
@@ -54,92 +70,94 @@
 
 ### Milestone 0.1: Infraestrutura Base
 
-- [ ] Setup do repositório com estrutura de pastas
-- [ ] Configuração inicial do Docker Compose
-- [ ] Setup Postgres com migrações básicas
-- [ ] Setup Redis básico
-- [ ] Documentação inicial de desenvolvimento
+- [x] Setup do repositório com estrutura de pastas
+- [x] Configuração inicial do Docker Compose
+- [x] Setup Postgres com migrações básicas
+- [x] Setup Redis básico
+- [x] Documentação inicial de desenvolvimento
 
 **Critérios de Aceite**:
 
-- [ ] `docker-compose up` funciona
-- [ ] Postgres conecta e aceita migrações
-- [ ] Redis está acessível
-- [ ] Estrutura de pastas criada conforme especificação
+- [x] `docker-compose up` funciona
+- [x] Postgres conecta e aceita migrações
+- [x] Redis está acessível
+- [x] Estrutura de pastas criada conforme especificação
 
 ---
 
 ## Fase 1: MVP1 - Chat Básico com Observability
 
-**Duração**: 3-4 semanas
+**Duração**: 4-6 semanas
 
 ### Milestone 1.1: MCP Broker Básico
 
 **Prazo**: 1 semana
 
-- [ ] Implementar MCP Broker stub
-- [ ] Estrutura básica de ferramentas MCP
-- [ ] Tool `observ.search_assets` básica
-- [ ] Tool `observ.get_metrics` básica
-- [ ] Validação de entrada das tools
-- [ ] Logs estruturados básicos
+- [x] Implementar MCP Broker stub
+- [x] Estrutura básica de ferramentas MCP
+- [x] Tool `observ.search_assets` básica
+- [x] Tool `observ.get_metrics` básica
+- [x] Validação de entrada das tools
+- [x] Logs estruturados básicos
 
 **Critérios de Aceite**:
 
-- [ ] MCP Broker responde na porta 9000
-- [ ] Tools retornam dados mockados válidos
-- [ ] Logs aparecem em formato JSON
-- [ ] Health check funciona
+- [x] MCP Broker responde na porta 9000
+- [x] Tools retornam dados mockados válidos
+- [x] Logs aparecem em formato JSON
+- [x] Health check funciona
 
 ### Milestone 1.2: Adapter Observability Mockado
 
 **Prazo**: 1 semana
 
-- [ ] API REST básica do adapter
-- [ ] Endpoints `/assets/search` e `/metrics/{id}`
-- [ ] Dados mockados realistas
-- [ ] Timeouts e error handling básicos
-- [ ] Headers de correlação
+- [x] API REST básica do adapter
+- [x] Endpoints `/api/v1/nodes/query` e `/api/v1/nodes/{id}/metrics` (baseados no SolarWinds API Gateway)
+- [x] Dados mockados realistas
+- [x] Timeouts e error handling básicos
+- [x] Headers de correlação
 
 **Critérios de Aceite**:
 
-- [ ] Adapter responde na porta 9010
-- [ ] Retorna dados em formato esperado pelo Broker
-- [ ] Simula latência realista (100-300ms)
-- [ ] Error handling para casos inválidos
+- [x] Adapter responde na porta 9010
+- [x] Retorna dados em formato esperado pelo Broker
+- [x] Simula latência realista (100-300ms)
+- [x] Error handling para casos inválidos
 
 ### Milestone 1.3: Channel Gateway Básico
 
 **Prazo**: 1 semana
 
-- [ ] API REST para receber mensagens
-- [ ] Parsing básico de intents
-- [ ] Roteamento para Agents
-- [ ] Autenticação stub (bearer token simples)
-- [ ] CORS habilitado
+- [x] API REST básica do gateway
+- [x] Endpoint `/api/v1/messages` para receber mensagens
+- [x] Parsing básico de intents (observability, itsm, general)
+- [x] Roteamento para agents (mock por enquanto)
+- [x] Autenticação stub (bearer token simples)
+- [x] CORS habilitado
 
 **Critérios de Aceite**:
 
-- [ ] Gateway responde na porta 9200
-- [ ] Aceita POST com mensagens
-- [ ] Roteia para agents corretamente
-- [ ] Retorna respostas formatadas
+- [x] Gateway responde na porta 9200
+- [x] Aceita POST com mensagens via `/api/v1/messages`
+- [x] Roteia para agents corretamente (mock)
+- [x] Retorna respostas formatadas
 
 ### Milestone 1.4: Agents Layer Simples
 
 **Prazo**: 1 semana
 
-- [ ] Agent básico que classifica intents
-- [ ] Chamadas para MCP Broker
-- [ ] Formatação de respostas para chat
-- [ ] Tratamento de erros básico
+- [x] Agent básico que classifica intents (observability, itsm, general)
+- [x] Chamadas para MCP Broker (mockadas por enquanto)
+- [x] Formatação de respostas para chat
+- [x] Tratamento de erros básico
+- [x] Integração com Channel Gateway
 
 **Critérios de Aceite**:
 
-- [ ] Agent identifica intent "metric" e "asset_search"
-- [ ] Chama MCP tools apropriadas
-- [ ] Retorna resposta legível para humano
-- [ ] Funciona end-to-end: Gateway → Agent → MCP → Adapter
+- [x] Agent identifica intent "observability" e "itsm"
+- [x] Chama MCP tools apropriadas (mock)
+- [x] Retorna resposta legível para humano
+- [x] Funciona end-to-end: Gateway → Agent → MCP → Adapter
 
 **🎯 Entrega MVP1**: Chat básico funcionando com consultas de observability
 
@@ -147,11 +165,11 @@
 
 ## Fase 2: MVP2 - Gestão de Incidentes ITSM
 
-**Duração**: 4-5 semanas
+**Duração**: 6-8 semanas
 
 ### Milestone 2.1: Adapter ITSM
 
-**Prazo**: 2 semanas
+**Prazo**: 3-4 semanas
 
 - [ ] API REST do adapter ITSM
 - [ ] Endpoints para CRUD de incidentes
@@ -186,7 +204,7 @@
 
 ### Milestone 2.3: Agente de Incidentes
 
-**Prazo**: 1-2 semanas
+**Prazo**: 2-3 semanas
 
 - [ ] Intent classification para incidentes
 - [ ] "Abrir incidente" com parsing de parâmetros
@@ -282,7 +300,7 @@
 
 ## Fase 5: Cache e Performance
 
-**Duração**: 2-3 semanas
+**Duração**: 3-4 semanas
 
 ### Milestone 5.1: Redis Cache
 
@@ -394,39 +412,39 @@
 | Fase | Duração | Marco Principal |
 |------|---------|----------------|
 | 0 | 1 semana | Infraestrutura base |
-| 1 | 3-4 semanas | **MVP1: Chat + Observability** |
-| 2 | 4-5 semanas | **MVP2: Gestão de Incidentes** |
+| 1 | 4-6 semanas | **MVP1: Chat + Observability** |
+| 2 | 6-8 semanas | **MVP2: Gestão de Incidentes** |
 | 3 | 3-4 semanas | Autenticação completa |
 | 4 | 2-3 semanas | Tenancy e RLS |
-| 5 | 2-3 semanas | Cache e performance |
+| 5 | 3-4 semanas | Cache e performance |
 | 6 | 2 semanas | Observabilidade |
 | 7 | 2-3 semanas | Produção |
 
-**Total Estimado**: 19-25 semanas (~5-6 meses)
+**Total Estimado**: 23-31 semanas (~6-8 meses)
 
 ---
 
 ## 🎯 Marcos de Demonstração
 
-### Demo 1 (Semana 4): MVP1 Funcionando
+### Demo 1 (Semana 5-6): MVP1 Funcionando
 
 - Chat simples respondendo consultas de observability
 - "Mostrar CPU do servidor web-01"
 - "Listar servidores do site DC-A"
 
-### Demo 2 (Semana 9): MVP2 Completo
+### Demo 2 (Semana 12-14): MVP2 Completo
 
 - Gestão completa de incidentes via chat
 - "Abrir incidente para servidor com problema"
 - "Atualizar incidente com dados de monitoramento"
 
-### Demo 3 (Semana 13): Versão Segura
+### Demo 3 (Semana 18-20): Versão Segura
 
 - Múltiplos tenants isolados
 - Autenticação e autorização funcionando
 - Dashboard de métricas
 
-### Demo 4 (Semana 19): Versão Produção
+### Demo 4 (Semana 25-27): Versão Produção
 
 - Sistema completo e otimizado
 - Cache, rate limiting, auditoria
@@ -434,7 +452,37 @@
 
 ---
 
-## 🔧 Stack Tecnológico
+## ⏰ Análise de Tempos e Riscos
+
+### Fatores que Influenciam os Prazos
+
+**✅ Tempos Realistas Para:**
+- Desenvolvedor sênior Python/FastAPI experiente
+- Conhecimento prévio em MCP e arquiteturas distribuídas
+- Ambiente de desenvolvimento já configurado
+- Decisões arquiteturais já tomadas
+
+**⚠️ Podem Aumentar 30-50% se:**
+- Equipe junior ou aprendendo as tecnologias
+- Primeira vez implementando MCP
+- Muitas mudanças de requisitos
+- Integrações complexas com sistemas legados reais
+
+**� Principais Riscos de Atraso:**
+
+1. **Fase 1-2 (MVPs)**: Curva de aprendizado MCP + debugging de integrações
+2. **Fase 2**: Complexidade real dos sistemas ITSM (ServiceNow/Remedy)
+3. **Fase 3**: Configurações Keycloak específicas do ambiente
+4. **Fase 5**: Otimizações de performance podem revelar problemas arquiteturais
+
+### Recomendações para Mitigar Riscos
+
+- **Buffer de 20%** nos milestones críticos (MVP1/MVP2)
+- **Prototipação rápida** antes de implementação completa
+- **Testes de integração** desde o primeiro milestone
+- **Reviews arquiteturais** semanais nas primeiras 8 semanas
+
+---
 
 **Backend**: Python 3.11+, FastAPI, SQLAlchemy  
 **MCP**: fastmcp library  
@@ -495,7 +543,7 @@
    - Documentar ambiente de desenvolvimento
    - Testar toda a stack básica
 
-### Semana 2-4: MVP1 Development
+### Semana 2-6: MVP1 Development
 
 **Foco**: Entregar chat básico que consulta observability
 

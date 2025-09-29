@@ -38,3 +38,39 @@ Interoperabilidade com qualquer gateway e qualquer ferramenta plugável.
 Menos acoplamento entre canais e backends.
 
 Base pronta para regras finas de permissão e auditoria completa.
+
+## Desenvolvimento
+
+### Pré-requisitos
+
+- Docker e Docker Compose
+- Python 3.11+ (opcional, para desenvolvimento local)
+
+### Setup Inicial
+
+1. Clone o repositório
+2. Execute `docker-compose up -d` para subir Postgres e Redis
+3. As migrações serão aplicadas automaticamente no startup do Postgres
+
+### Estrutura do Projeto
+
+- `src/`: Código fonte
+  - `adapters/`: Adaptadores para sistemas externos (Observability, ITSM)
+  - `agents/`: Lógica dos agentes Suporte/Cliente
+  - `brokers/`: MCP Broker para roteamento de ferramentas
+  - `gateways/`: Channel Gateway para entrada de mensagens
+  - `models/`: Modelos de dados SQLAlchemy
+  - `services/`: Serviços compartilhados
+- `tests/`: Testes automatizados
+- `migrations/`: Migrações do banco de dados
+- `docker/`: Configurações Docker adicionais
+- `config/`: Configurações do projeto
+
+### Comandos Úteis
+
+- `docker-compose up`: Subir todos os serviços
+- `docker-compose down`: Parar serviços
+- `docker-compose logs postgres`: Ver logs do Postgres
+- `docker-compose exec postgres psql -U supertools_user -d agentesupertools`: Acessar banco
+- `poetry install`: Instalar dependências Python
+- `poetry run python -m src.brokers.main`: Rodar o MCP Broker localmente
